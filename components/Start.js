@@ -6,16 +6,22 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 
-const image = require('../assets/Background.png');
+const backgoundImage = require('../assets/background.png');
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
   const [color, setColor] = useState('#000000');
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+      <ImageBackground
+        source={backgoundImage}
+        resizeMode="cover"
+        style={styles.image}
+      >
         <Text style={styles.title}>Chat App</Text>
         <View style={styles.inputView}>
           <TextInput
@@ -91,6 +97,9 @@ const Start = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
+      {Platform.OS === 'ios' ? (
+        <KeyboardAvoidingView behavior="padding" />
+      ) : null}
     </View>
   );
 };
