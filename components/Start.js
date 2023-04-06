@@ -33,7 +33,7 @@ const Start = ({ navigation }) => {
           <View style={styles.chooseContainer}>
             <Text style={styles.choose}>Choose Background Color:</Text>
             <View style={styles.colorContainer}>
-              <TouchableOpacity
+              <View
                 style={[
                   styles.selected,
                   color === '#000000'
@@ -45,8 +45,8 @@ const Start = ({ navigation }) => {
                   style={[styles.color, styles.black]}
                   onPress={() => setColor('#000000')}
                 ></TouchableOpacity>
-              </TouchableOpacity>
-              <TouchableOpacity
+              </View>
+              <View
                 style={[
                   styles.selected,
                   color === '#474056'
@@ -58,8 +58,8 @@ const Start = ({ navigation }) => {
                   style={[styles.color, styles.gray]}
                   onPress={() => setColor('#474056')}
                 ></TouchableOpacity>
-              </TouchableOpacity>
-              <TouchableOpacity
+              </View>
+              <View
                 style={[
                   styles.selected,
                   color === '#8A95A5'
@@ -71,8 +71,8 @@ const Start = ({ navigation }) => {
                   style={[styles.color, styles.blue]}
                   onPress={() => setColor('#8A95A5')}
                 ></TouchableOpacity>
-              </TouchableOpacity>
-              <TouchableOpacity
+              </View>
+              <View
                 style={[
                   styles.selected,
                   color === '#B9C6AE'
@@ -84,7 +84,7 @@ const Start = ({ navigation }) => {
                   style={[styles.color, styles.green]}
                   onPress={() => setColor('#B9C6AE')}
                 ></TouchableOpacity>
-              </TouchableOpacity>
+              </View>
             </View>
           </View>
           <TouchableOpacity
@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
   },
   colorContainer: {
     flexDirection: 'row',
-    alignItems: 'space-between',
     width: '100%',
     marginTop: 10,
   },
@@ -172,7 +171,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#B9C6AE',
   },
   selected: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
