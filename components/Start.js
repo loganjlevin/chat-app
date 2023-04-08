@@ -8,12 +8,26 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
+import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 
 const backgoundImage = require('../assets/background.png');
+
 const Start = ({ navigation }) => {
   const [name, setName] = useState('');
   const [color, setColor] = useState('#000000');
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      navigation.navigate('Chat', {
+        userID: user.uid,
+        name: name,
+        color: color,
+      });
+    }
+  });
 
   return (
     <View style={styles.container}>
@@ -89,9 +103,7 @@ const Start = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={styles.button}
-            onPress={() =>
-              navigation.navigate('Chat', { name: name, color: color })
-            }
+            onPress={() => signInAnonymously(auth)}
           >
             <Text style={styles.buttonText}>Start Chatting</Text>
           </TouchableOpacity>

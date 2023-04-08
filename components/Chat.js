@@ -1,39 +1,44 @@
 import { StyleSheet, View, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState, useEffect } from 'react';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+} from 'firebase/firestore';
 const userIcon = require('../assets/user.png');
 
-const Chat = ({ route, navigation }) => {
-  const { name, color } = route.params;
+const Chat = ({ route, navigation, db }) => {
+  const { name, color, userID } = route.params;
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     navigation.setOptions({ title: name });
 
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: userIcon,
-        },
-      },
-      {
-        _id: 2,
-        text: `${name} has entered the chat.`,
-        createdAt: new Date(),
-        system: true,
-      },
-    ]);
-  }, []);
+    const q = query(collection(db, 'messages'), orderBy('createdAt', 'desc'));
+    const unsubMessages = onSnapshot(q, (documentsSnapshot) => {
+      let newMessages = [];
+      documentsSnapshot.forEach((doc) => {
+        newMessages.push({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: new Date(doc.data().createdAt.toMillis()),
+        });
+      });
+
+      setMessages(newMessages);
+    });
+
+    return () => {
+      if (unsubMessages) unsubMessages();
+    };
+  }, [name]);
 
   const onSend = (newMessages) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, newMessages)
-    );
+    addDoc(collection(db, 'messages'), newMessages[0]);
   };
 
   const renderBubble = (props) => {
@@ -59,7 +64,8 @@ const Chat = ({ route, navigation }) => {
         renderBubble={renderBubble}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1,
+          _id: userID,
+          name: name,
         }}
       />
       {Platform.OS === 'android' ? (
