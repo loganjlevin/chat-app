@@ -94,9 +94,9 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
           style={{ width: 150, height: 100, borderRadius: 13, margin: 3 }}
           region={{
             latitude: currentMessage.location.latitude,
-            longitute: currentMessage.location.longitute,
+            longitude: currentMessage.location.longitude,
             latitudeDelta: 0.0922,
-            longituteDelta: 0.0421,
+            longitudeDelta: 0.0421,
           }}
         />
       );

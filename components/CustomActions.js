@@ -47,16 +47,20 @@ const CustomActions = ({
 
   const pickImage = async () => {
     let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissions?.granted) {
-      let result = await ImagePicker.launchImageLibraryAsync();
-      if (!result.canceled) await uploadAndSendImage(result.assets[0].uri);
-      else Alert.alert("Permissions haven't been granted.");
+    try {
+      if (permissions?.granted) {
+        let result = await ImagePicker.launchImageLibraryAsync();
+        if (!result.canceled) await uploadAndSendImage(result.assets[0].uri);
+        else Alert.alert("Permissions haven't been granted.");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const takePhoto = async () => {
+    let permissions = await ImagePicker.requestCameraPermissionsAsync();
     try {
-      let permissions = await ImagePicker.requestCameraPermissionsAsync();
       if (permissions?.granted) {
         let result = await ImagePicker.launchCameraAsync();
         if (!result.canceled) await uploadAndSendImage(result.assets[0].uri);
